@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const Landmark = require('./models/landmark')
+const Landmarks = require('./models/landmark')
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -20,12 +20,16 @@ app.get('/', (req, res) => {
     res.render('home');
 })
 
-app.get('/testnew', async (req, res) => {
-    const lm = await  new Landmark({title: 'harbour bridge'});
-    lm.save();
-    res.send(lm);
+app.get('/landmarks', async (req, res) => {
+    const landmarks = await Landmarks.find({});
+    res.render('landmarks/index', {landmarks});
 })
 
+app.get('/landmarks/:id', async (req, res) => {
+    const landmark = await Landmarks.findById(req.params.id);
+    res.render('landmarks/show', {landmark});
+
+})
 
 
 app.listen(3000, () => {
