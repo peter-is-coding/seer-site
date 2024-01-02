@@ -1,10 +1,13 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const Landmarks = require('./models/landmark')
+const Landmark = require('./models/landmark')
+const methodOverride = require('method-override');
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.urlencoded({extended: true}));
+app.use(methodOverride('_method'))
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/seersite-test', {})
@@ -21,15 +24,45 @@ app.get('/', (req, res) => {
 })
 
 app.get('/landmarks', async (req, res) => {
-    const landmarks = await Landmarks.find({});
+    const landmarks = await Landmark.find({});
     res.render('landmarks/index', {landmarks});
 })
 
-app.get('/landmarks/:id', async (req, res) => {
-    const landmark = await Landmarks.findById(req.params.id);
-    res.render('landmarks/show', {landmark});
 
+app.get('/landmarks/new', (req, res) => {
+    res.render('landmarks/new');
 })
+
+app.post('/landmarks/new', async (req, res) => {
+    const {title, location} = req.body.landmark;
+    const landmark = new Landmark({title: title, location: location})
+    await landmark.save();
+    res.redirect(`/landmarks/${landmark._id}`)
+})
+
+//Place variable entries below others with similar paths, or express will think another route is a parameter.
+app.get('/landmarks/:id', async (req, res) => {
+    const landmark = await Landmark.findById(req.params.id);
+    res.render('landmarks/show', {landmark});
+})
+
+app.get('/landmarks/:id/edit', async (req, res) => {
+    const landmark = await Landmark.findById(req.params.id);
+    res.render('landmarks/edit', {landmark});
+})
+
+app.patch('/landmarks/:id/edit', async (req, res) => {
+    const {title, location} = req.body.landmark;
+    const landmark = await Landmark.findByIdAndUpdate(req.params.id, {title: title, location: location});
+    //await landmark.save();
+    res.redirect(`/landmarks/${landmark._id}`)
+})
+
+app.delete('/landmarks/:id', async (req, res) => {
+    await Landmark.findByIdAndDelete(req.params.id);
+    res.redirect(`/landmarks/`)
+})
+
 
 
 app.listen(3000, () => {
