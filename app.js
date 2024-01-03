@@ -18,6 +18,10 @@ db.once("open", () => {
     console.log("Connect to DB.");
 });
 
+app.use((req, res, next) => {
+    req.requestTime = Date.now();
+    next();
+})
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -61,6 +65,12 @@ app.patch('/landmarks/:id/edit', async (req, res) => {
 app.delete('/landmarks/:id', async (req, res) => {
     await Landmark.findByIdAndDelete(req.params.id);
     res.redirect(`/landmarks/`)
+})
+
+
+app.use('/', (req, res) => {
+    res.status(404);
+    res.render('404');
 })
 
 
