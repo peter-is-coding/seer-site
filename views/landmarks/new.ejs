@@ -1,25 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create a Landmark | Seer-Site</title>
-</head>
-<body>
-    <h1>Create a new Landmark</h1>
-    <form action="/landmarks/new" method="POST">
-        <label for="title">Name:</label>
-        <input type="text" id="title" name="landmark[title]" placeholder="Landmark Name...">
-        <br>
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="landmark[location]" placeholder="Landmark location...">
-        <br>
-        <button>Create</button>
-    </form>
+<% layout('layouts/boilerplate') %> 
+<h1>Create a new Landmark</h1>
+<form action="/landmarks/new" method="POST">
+    <label for="title">Name:</label>
+    <input type="text" id="title" name="landmark[title]" placeholder="Landmark Name...">
     <br>
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="landmark[location]" placeholder="Landmark location...">
     <br>
-    <a href="/landmarks/">Back to all Landmarks</a>
-
-
-</body>
-</html>
+    <button>Create</button>
+</form>
+<br>
+<br>
+<a href="/landmarks/">Back to all Landmarks</a>

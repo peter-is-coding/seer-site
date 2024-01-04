@@ -19,9 +19,12 @@ const seedDB = async () => {
         const f = sample(seedHelpers.first);
         const m = sample(seedHelpers.middle);
         const l = sample(seedHelpers.last);
+        const title = `${f} ${m} ${l}`
         const landmark = new Landmark({
-            title: `${f} ${m} ${l}`,
-            location: "Nearby City, MA"
+            title,
+            location: "Nearby City, MA",
+            image: `https://source.unsplash.com/400x400`,
+            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae optio voluptates distinctio nulla aut! Exercitationem, blanditiis laboriosam. Voluptatum, unde repellendus magni dolorem porro architecto ipsam nihil dolore nostrum id recusandae?'
     });
         await landmark.save();
     }

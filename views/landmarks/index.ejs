@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landmarks</title>
-</head>
-<body>
-    <h1>All Landmarks</h1>
-    <ul>
-        <% for (let landmark of landmarks) {%>
-            <li><a href="/landmarks/<%= landmark.id %>"><%= landmark.title %></a></li>
-        <% } %> 
-    </ul>
-    <br>
-    <br>
-    <a href="/landmarks/new">Add a new landmark</a>
-
-</body>
-</html>
+<% layout('layouts/boilerplate') %> 
+<h1>All Landmarks</h1>
+<ul>
+    <% for (let landmark of landmarks) {%>
+        <li><a href="/landmarks/<%= landmark.id %>"><%= landmark.title %></a></li>
+    <% } %> 
+</ul>
+<br>
+<br>
+<a href="/landmarks/new">Add a new landmark</a>
