@@ -1,14 +1,24 @@
 <% layout('layouts/boilerplate') %> 
-<h1>Create a new Landmark</h1>
+<div class="row">
+    <div class="col-6 offset-3">
+        <h1>Create a new Landmark</h1>
 <form action="/landmarks/new" method="POST">
-    <label for="title">Name:</label>
-    <input type="text" id="title" name="landmark[title]" placeholder="Landmark Name...">
+    <label for="title" class="form-label">Name:</label>
+    <input type="text" class="form-control" id="title" name="landmark[title]" placeholder="Landmark Name...">
     <br>
-    <label for="location">Location:</label>
-    <input type="text" id="location" name="landmark[location]" placeholder="Landmark location...">
+    <label for="location" class="form-label">Location:</label>
+    <input type="text" class="form-control" id="location" name="landmark[location]" placeholder="Landmark location...">
     <br>
-    <button>Create</button>
+    <label for="image" class="form-label">Image URL:</label>
+    <input type="text" class="form-control" id="image" name="landmark[image]" placeholder="Image URL...">
+    <br>
+    <label for="description" class="form-label">Description:</label>
+    <textarea type="text" class="form-control" id="description" name="landmark[description]"></textarea>
+    <br>
+    <button class="btn btn-dark">Create</button>
 </form>
-<br>
-<br>
-<a href="/landmarks/">Back to all Landmarks</a>
+    <br>
+    <br>
+    <a href="/landmarks/">Back to all Landmarks</a>
+    </div>
+</div>

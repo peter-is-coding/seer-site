@@ -40,8 +40,8 @@ app.get('/landmarks/new', (req, res) => {
 })
 
 app.post('/landmarks/new', async (req, res) => {
-    const {title, location} = req.body.landmark;
-    const landmark = new Landmark({title: title, location: location})
+    //const {title, location, image, description} = req.body.landmark;
+    const landmark = new Landmark(req.body.landmark)
     await landmark.save();
     res.redirect(`/landmarks/${landmark._id}`)
 })
@@ -58,8 +58,8 @@ app.get('/landmarks/:id/edit', async (req, res) => {
 })
 
 app.patch('/landmarks/:id/edit', async (req, res) => {
-    const {title, location} = req.body.landmark;
-    const landmark = await Landmark.findByIdAndUpdate(req.params.id, {title: title, location: location});
+    //const {title, location} = req.body.landmark;
+    const landmark = await Landmark.findByIdAndUpdate(req.params.id, req.body.landmark);
     //await landmark.save();
     res.redirect(`/landmarks/${landmark._id}`)
 })
