@@ -2,12 +2,12 @@
 <div class="row">
     <div class="col-6 offset-3">
 <h1>Edit a Landmark</h1>
-<form action="/landmarks/<%= landmark._id %>/edit?_method=PATCH" method="POST">
+<form action="/landmarks/<%= landmark._id %>/edit?_method=PATCH" method="POST" class="needs-validation" novalidate>
     <label for="title" class="form-label">Name:</label>
-    <input type="text" class="form-control" id="title" name="landmark[title]" placeholder="Landmark Name..."  value="<%= landmark.title %>">
+    <input type="text" class="form-control" id="title" name="landmark[title]" placeholder="Landmark Name..."  value="<%= landmark.title %>" required>
     <br>
     <label for="location" class="form-label">Location:</label>
-    <input type="text" class="form-control" id="location" name="landmark[location]" placeholder="Landmark location..."  value="<%= landmark.location %>">
+    <input type="text" class="form-control" id="location" name="landmark[location]" placeholder="Landmark location..."  value="<%= landmark.location %>" required>
     <br>
     <label for="image" class="form-label">Image URL:</label>
     <input type="text" class="form-control" id="image" name="landmark[image]" placeholder="Image URL..."  value="<%= landmark.image %>">
@@ -27,3 +27,6 @@
 <a href="/landmarks/<%= landmark._id %>">Back</a>
 </div>
 </div>
+
+
+<script src="/form-validator.js"></script>
