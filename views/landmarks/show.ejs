@@ -1,21 +1,78 @@
-<% layout('layouts/boilerplate') %> 
-
+<% layout('layouts/boilerplate') %>
 <div class="row">
-    <div class="col-6 offset-3">
-    <div class="card">
-      <img src="<%= landmark.image %>" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title"><%= landmark.title %></h5>
-        <p class="card-text"><%= landmark.description %></p>
-        <a class="card-link btn btn-dark" href="/landmarks/<%= landmark._id %>/edit">Edit</a>
-      </div>
-      
-      <div class="card-footer">
-        <small class="text-muted"><%= landmark.location %></small>
+    <div class="col-6">
+        <div class="card">
+            <img src="<%= landmark.image %>" class="card-img-top" alt="..." />
+            <div class="card-body">
+                <h5 class="card-title"><%= landmark.title %></h5>
+                <p class="card-text"><%= landmark.description %></p>
+                <a
+                    class="card-link btn btn-dark"
+                    href="/landmarks/<%= landmark._id %>/edit"
+                    >Edit</a
+                >
+            </div>
+            <div class="card-footer">
+                <small class="text-muted"><%= landmark.location %></small>
+            </div>
+        </div>
     </div>
+    <div class="col-6">
+        <div class="card p-2">
+            <h5 class="card-title mb-5">Reviews</h5>
+
+            <% for (let review of landmark.reviews ) { %> <% if(review.text) {
+            %>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <p class="card-title">
+                        <b>Rating:</b> <%= review.rating %>
+                    </p>
+                    <p class="card-text"><%= review.text %></p>
+                </div>
+                <% if(true){ %>
+                <div class="card-footer d-flex justify-content-end">
+                    <button type="button" class="btn btn-dark mx-1">
+                        Edit
+                    </button>
+                    <form
+                        action="/landmarks/<%= landmark._id %>/reviews/<%= review._id %>?_method=DELETE"
+                        method="post"
+                    >
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+                <% } %>
+            </div>
+            <% } %> <% } %>
+
+            <form
+                action="/landmarks/<%= landmark._id %>/reviews"
+                method="POST"
+                class="needs-validation"
+            >
+                <h5 class="mt-5">Submit a review:</h5>
+                <label for="rating" class="form-label">Rating:</label>
+                <input
+                    type="range"
+                    class="form-range"
+                    min="1"
+                    max="5"
+                    id="rating"
+                    name="review[rating]"
+                    value="3"
+                />
+                <br />
+                <label for="review" class="form-label">Review:</label>
+                <textarea
+                    type="text"
+                    class="form-control"
+                    id="review"
+                    name="review[text]"
+                ></textarea>
+                <br />
+                <button class="btn btn-dark">Save</button>
+            </form>
+        </div>
     </div>
-  </div>
-</div>
-<div class="mt-5">
-    <a class="btn btn-dark" href="/landmarks/">Back</a>
 </div>
