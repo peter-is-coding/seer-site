@@ -2,18 +2,9 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const catchAsync = require("../util/catchAsync");
 const { reviewSchema } = require("../schemas");
+const { forceLogin, validateReview } = require("../util/middleware");
 const Landmark = require("../models/landmark");
 const Review = require("../models/review");
-
-const validateReview = (req, res, next) => {
-    const result = reviewSchema.validate(req.body);
-    if (result.error) {
-        const err = result.error.details.map((e) => e.message).join(";");
-        throw new ExpressError(err, 400);
-    } else {
-        next();
-    }
-};
 
 router.post(
     "/",
@@ -24,6 +15,7 @@ router.post(
         landmark.reviews.push(review);
         await review.save();
         await landmark.save();
+        req.flash("success", "Thanks for submitting a review.");
         res.redirect(`/landmarks/${landmark._id}`);
     })
 );
@@ -34,6 +26,7 @@ router.delete(
         const { id, reviewId } = req.params;
         await Landmark.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
         await Review.findByIdAndDelete(reviewId);
+        req.flash("success", "Review deleted.");
         res.redirect(`/landmarks/${id}`);
     })
 );
