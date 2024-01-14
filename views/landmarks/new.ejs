@@ -1,25 +1,50 @@
-<% layout('layouts/boilerplate') %> 
+<% layout('layouts/boilerplate') %>
 <div class="row">
     <div class="col-6 offset-3">
         <h1>Create a new Landmark</h1>
-<form action="/landmarks" method="POST" class="needs-validation" novalidate>
-    <label for="title" class="form-label">Name:</label>
-    <input type="text" class="form-control" id="title" name="landmark[title]" placeholder="Landmark Name..." required>
-    <br>
-    <label for="location" class="form-label">Location:</label>
-    <input type="text" class="form-control" id="location" name="landmark[location]" placeholder="Landmark location..." required>
-    <br>
-    <label for="image" class="form-label">Image URL:</label>
-    <input type="text" class="form-control" id="image" name="landmark[image]" placeholder="Image URL...">
-    <br>
-    <label for="description" class="form-label">Description:</label>
-    <textarea type="text" class="form-control" id="description" name="landmark[description]"></textarea>
-    <br>
-    <button class="btn btn-dark">Create</button>
-</form>
-    <br>
-    <br>
-    <a href="/landmarks/">Back to all Landmarks</a>
+        <form
+            action="/landmarks"
+            method="POST"
+            class="needs-validation"
+            novalidate
+            enctype="multipart/form-data"
+        >
+            <label for="title" class="form-label">Name:</label>
+            <input
+                type="text"
+                class="form-control"
+                id="title"
+                name="landmark[title]"
+                placeholder="Landmark Name..."
+                required
+            />
+            <br />
+            <label for="location" class="form-label">Location:</label>
+            <input
+                type="text"
+                class="form-control"
+                id="location"
+                name="landmark[location]"
+                placeholder="Landmark location..."
+                required
+            />
+            <br />
+            <label for="image" class="form-label">Image</label>
+            <input type="file" name="landmark[image]" id="image" />
+            <br />
+            <label for="description" class="form-label">Description:</label>
+            <textarea
+                type="text"
+                class="form-control"
+                id="description"
+                name="landmark[description]"
+            ></textarea>
+            <br />
+            <button class="btn btn-dark">Create</button>
+        </form>
+        <br />
+        <br />
+        <a href="/landmarks/">Back to all Landmarks</a>
     </div>
 </div>
 

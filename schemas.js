@@ -16,7 +16,7 @@ const landmarkSchema = Joi.object({
 const reviewSchema = Joi.object({
     review: Joi.object({
         text: Joi.string().empty(""),
-        rating: Joi.number().min(1).max(5).required(),
+        rating: Joi.number().min(0).max(5).required(),
     }).required(),
 });
 
