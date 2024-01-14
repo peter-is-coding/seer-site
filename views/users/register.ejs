@@ -1,0 +1,39 @@
+<% layout('layouts/boilerplate') %>
+<div class="row">
+    <div class="col-6 offset-3">
+        <h1>Register your account</h1>
+        <form
+            action="/register"
+            method="POST"
+            class="needs-validation"
+            novalidate
+        >
+            <label for="username" class="form-label">Username:</label>
+            <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="user[username]"
+                placeholder="Username..."
+                required
+            />
+            <br />
+            <label for="password" class="form-label">Password:</label>
+            <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="user[password]"
+                placeholder="Password..."
+                required
+            />
+            <br />
+            <button class="btn btn-dark">Register</button>
+        </form>
+        <br />
+        <br />
+        <a href="/">Home</a>
+    </div>
+</div>
+
+<script src="/form-validator.js"></script>

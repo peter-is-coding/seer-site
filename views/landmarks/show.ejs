@@ -6,11 +6,17 @@
             <div class="card-body">
                 <h5 class="card-title"><%= landmark.title %></h5>
                 <p class="card-text"><%= landmark.description %></p>
+                <p class="small">
+                    Created by: <%= landmark.creator.username %>
+                </p>
+                <% if(currentUser && landmark.creator.equals(currentUser._id) )
+                { %>
                 <a
                     class="card-link btn btn-dark"
                     href="/landmarks/<%= landmark._id %>/edit"
                     >Edit</a
                 >
+                <% } %>
             </div>
             <div class="card-footer">
                 <small class="text-muted"><%= landmark.location %></small>
@@ -30,22 +36,26 @@
                     </p>
                     <p class="card-text"><%= review.text %></p>
                 </div>
-                <% if(true){ %>
-                <div class="card-footer d-flex justify-content-end">
-                    <button type="button" class="btn btn-dark mx-1">
-                        Edit
-                    </button>
-                    <form
-                        action="/landmarks/<%= landmark._id %>/reviews/<%= review._id %>?_method=DELETE"
-                        method="post"
-                    >
-                        <button class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
-                <% } %>
-            </div>
-            <% } %> <% } %>
 
+                <div class="card-footer d-flex justify-content-between">
+                    <div>By: <%= review.creator.username %></div>
+                    <% if(true || (currentUser &&
+                    review.creator.equals(currentUser._id))){ %>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-dark mx-1">
+                            Edit
+                        </button>
+                        <form
+                            action="/landmarks/<%= landmark._id %>/reviews/<%= review._id %>?_method=DELETE"
+                            method="post"
+                        >
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+            <% } %> <% } %> <% if (currentUser){ %>
             <form
                 action="/landmarks/<%= landmark._id %>/reviews"
                 method="POST"
@@ -73,6 +83,7 @@
                 <br />
                 <button class="btn btn-dark">Save</button>
             </form>
+            <% } %>
         </div>
     </div>
 </div>

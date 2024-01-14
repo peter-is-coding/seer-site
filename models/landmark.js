@@ -8,6 +8,10 @@ const LandmarkSchema = new Schema({
     description: String,
     location: String,
     image: String,
+    creator: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    },
     reviews: [
         {
             type: Schema.Types.ObjectId,
