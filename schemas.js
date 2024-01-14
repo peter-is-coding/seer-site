@@ -1,5 +1,9 @@
 const Joi = require("joi");
 
+const userSchema = Joi.object({
+    username: Joi.string().required(),
+});
+
 const landmarkSchema = Joi.object({
     landmark: Joi.object({
         title: Joi.string().required(),

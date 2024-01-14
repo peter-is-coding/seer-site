@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const catchAsync = require("../util/catchAsync");
 const Landmark = require("../models/landmark");
-const { forceLogin, validateLandmark } = require("../util/middleware");
+const {
+    forceLogin,
+    checkLandmarkPermissions,
+    validateLandmark,
+} = require("../util/middleware");
 const ExpressError = require("../util/ExpressError");
-
-const { landmarkSchema } = require("../schemas");
 
 router.get(
     "/",
@@ -21,9 +23,11 @@ router.get("/new", forceLogin, (req, res) => {
 
 router.post(
     "/",
+    forceLogin,
     validateLandmark,
     catchAsync(async (req, res) => {
         const landmark = new Landmark(req.body.landmark);
+        landmark.creator = req.user._id;
         await landmark.save();
         if (!landmark) {
             req.flash("error", "Landmark ID not found.");
@@ -37,25 +41,33 @@ router.post(
 
 //Place variable entries below others with similar paths, or express will think another route is a parameter.
 router.get(
-    "/:id",
+    "/:lmid",
     catchAsync(async (req, res) => {
         try {
-            const landmark = await Landmark.findById(req.params.id); //only way to handle error on on this seems to be try/catch
+            const landmark = await Landmark.findById(req.params.lmid).populate([
+                "reviews",
+                "creator",
+                {
+                    path: "reviews",
+                    populate: { path: "creator" },
+                },
+            ]); //only way to handle error on on this seems to be try/catch
             //if (!landmark) throw new ExpressError("Landmark ID not found", 400);
-            landmark.populate("reviews");
+            //console.log(landmark);
             res.render("landmarks/show", { landmark });
         } catch (err) {
-            req.flash("error", `Error finding landmark id: ${req.params.id}`);
+            req.flash("error", `Error finding landmark id: ${req.params.lmid}`);
             res.redirect("/landmarks");
         }
     })
 );
 
 router.get(
-    "/:id/edit",
+    "/:lmid/edit",
+    forceLogin,
+    checkLandmarkPermissions,
     catchAsync(async (req, res) => {
-        const landmark = await Landmark.findById(req.params.id);
-        //if (!landmark) throw new ExpressError("Landmark ID not found", 400);
+        const landmark = await Landmark.findById(req.params.lmid);
         if (!landmark) {
             req.flash("error", "Landmark ID not found.");
             res.render("landmarks", { landmark });
@@ -66,28 +78,23 @@ router.get(
 );
 
 router.patch(
-    "/:id/edit",
+    "/:lmid/edit",
+    forceLogin,
+    checkLandmarkPermissions,
     validateLandmark,
     catchAsync(async (req, res) => {
-        const landmark = await Landmark.findByIdAndUpdate(
-            req.params.id,
-            req.body.landmark
-        );
-        //if (!landmark) throw new ExpressError("Landmark ID not found", 400);
-        if (!landmark) {
-            req.flash("error", "Landmark ID not found.");
-            res.render("landmarks", { landmark });
-        } else {
-            req.flash("success", "Landmark updated.");
-            res.redirect(`/landmarks/${landmark._id}`);
-        }
+        await Landmark.findByIdAndUpdate(req.params.lmid, req.body.landmark);
+        req.flash("success", "Landmark updated.");
+        res.redirect(`/landmarks/${landmark._id}`);
     })
 );
 
 router.delete(
-    "/:id",
+    "/:lmid",
+    forceLogin,
+    checkLandmarkPermissions,
     catchAsync(async (req, res) => {
-        const landmark = await Landmark.findByIdAndDelete(req.params.id);
+        const landmark = await Landmark.findByIdAndDelete(req.params.lmid);
         if (!landmark) {
             req.flash("error", "Landmark ID not found.");
             res.render("landmarks", { landmark });

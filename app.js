@@ -9,7 +9,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const ExpressError = require("./util/ExpressError");
 const User = require("./models/user");
-const { setFlashes } = require("./util/middleware");
+const { setFlashes, setUserDetails } = require("./util/middleware");
 
 const landmarkRouter = require("./routes/landmarks");
 const reviewRouter = require("./routes/reviews");
@@ -43,6 +43,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(flash());
 app.use(setFlashes);
+app.use(setUserDetails);
 
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/seersite-test", {});
@@ -65,7 +66,7 @@ app.get("/", (req, res) => {
 
 app.use("/", userRouter);
 app.use("/landmarks", landmarkRouter);
-app.use("/landmarks/:id/reviews", reviewRouter);
+app.use("/landmarks/:lmid/reviews", reviewRouter);
 
 app.all("*", (req, res, next) => {
     next(new ExpressError("Page not found.", 404));
