@@ -1,0 +1,21 @@
+body {
+    background-image: linear-gradient(
+            rgba(18, 20, 21, 0.3),
+            rgba(18, 20, 21, 0.7)
+        ),
+        url("/joseph-barrientos-fqmrAEiye1M-unsplash.jpg");
+    background-size: cover;
+    background-position: center;
+}
+main {
+    /* padding: 2rem; */
+    /* background-color: rgb(18, 20, 21, 0.8); */
+    /* border-radius: 1rem; */
+    text-shadow: 0 0.3rem 0.3rem rgba(0, 0, 0, 0.8);
+}
+
+.btn-dark {
+    background-color: rbga(0, 0, 0, 0);
+    border-radius: 4px;
+    text-shadow: none;
+}

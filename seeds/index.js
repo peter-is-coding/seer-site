@@ -37,7 +37,11 @@ const seedDB = async () => {
         const title = `${f} ${m} ${l}`;
         const landmark = new Landmark({
             title,
-            location: "Nearby City",
+            location: "Sydney Australia",
+            geometry: {
+                type: "Point",
+                coordinates: [151.2106825, -33.8522605],
+            },
             creator: adminUser,
             description:
                 "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae optio voluptates distinctio nulla aut! Exercitationem, blanditiis laboriosam. Voluptatum, unde repellendus magni dolorem porro architecto ipsam nihil dolore nostrum id recusandae?",
