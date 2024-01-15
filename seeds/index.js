@@ -30,15 +30,14 @@ const seedDB = async () => {
     const newUser = await new User({ username: "admin" });
     const adminUser = await User.register(newUser, "admin");
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 15; i++) {
         const f = sample(seedHelpers.first);
         const m = sample(seedHelpers.middle);
         const l = sample(seedHelpers.last);
         const title = `${f} ${m} ${l}`;
         const landmark = new Landmark({
             title,
-            location: "Nearby City, MA",
-            image: `https://source.unsplash.com/400x400`,
+            location: "Nearby City",
             creator: adminUser,
             description:
                 "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae optio voluptates distinctio nulla aut! Exercitationem, blanditiis laboriosam. Voluptatum, unde repellendus magni dolorem porro architecto ipsam nihil dolore nostrum id recusandae?",

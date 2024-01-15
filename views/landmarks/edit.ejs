@@ -1,32 +1,78 @@
-<% layout('layouts/boilerplate') %> 
+<% layout('layouts/boilerplate') %>
 <div class="row">
     <div class="col-6 offset-3">
-<h1>Edit a Landmark</h1>
-<form action="/landmarks/<%= landmark._id %>/edit?_method=PATCH" method="POST" class="needs-validation" novalidate>
-    <label for="title" class="form-label">Name:</label>
-    <input type="text" class="form-control" id="title" name="landmark[title]" placeholder="Landmark Name..."  value="<%= landmark.title %>" required>
-    <br>
-    <label for="location" class="form-label">Location:</label>
-    <input type="text" class="form-control" id="location" name="landmark[location]" placeholder="Landmark location..."  value="<%= landmark.location %>" required>
-    <br>
-    <label for="image" class="form-label">Image URL:</label>
-    <input type="text" class="form-control" id="image" name="landmark[image]" placeholder="Image URL..."  value="<%= landmark.image %>">
-    <br>
-    <label for="description" class="form-label">Description:</label>
-    <textarea type="text" class="form-control" id="description" name="landmark[description]"><%= landmark.description %></textarea>
-    <br>
-    <button class="btn btn-dark">Save</button>
-</form>
-<div class="mt-3">
-<form action="/landmarks/<%= landmark._id %>?_method=DELETE" method="POST">
-    <button class="btn btn-danger">Delete</button>
-</form>
-</div>
-<br>
-<br>
-<a href="/landmarks/<%= landmark._id %>">Back</a>
-</div>
-</div>
+        <h1>Edit a Landmark</h1>
+        <form
+            action="/landmarks/<%= landmark._id %>/edit?_method=PATCH"
+            method="POST"
+            class="needs-validation"
+            novalidate
+        >
+            <label for="title" class="form-label">Name:</label>
+            <input
+                type="text"
+                class="form-control"
+                id="title"
+                name="landmark[title]"
+                placeholder="Landmark Name..."
+                value="<%= landmark.title %>"
+                required
+            />
+            <br />
+            <label for="location" class="form-label">Location:</label>
+            <input
+                type="text"
+                class="form-control"
+                id="location"
+                name="landmark[location]"
+                placeholder="Landmark location..."
+                value="<%= landmark.location %>"
+                required
+            />
+            <br />
+            <label for="description" class="form-label">Description:</label>
+            <textarea
+                type="text"
+                class="form-control"
+                id="description"
+                name="landmark[description]"
+            >
+<%= landmark.description %></textarea
+            >
+            <div class="my-5">
+                <% landmark.images.forEach((image, index) => { %>
+                <img src="<%= image.thumbnail %>" class="image-thumbnail my-1" alt="" />
+                <div class="form-check-inline">
+                    <input
+                        type="checkbox"
+                        name="deleteImages[]"
+                        id="image-<%=index%>"
+                        value="<%=image.filename%>"
+                    />
+                </div>
+                <label class="mb-3" for="image-<%=index%>">Delete?</label>
+                <br>
+    
+                <% }) %>
+            <a class="btn btn-dark mt-3" href="/landmarks/<%= landmark._id %>"
+                >Back</a
+            >
+            <button class="btn btn-dark mt-3">Save</button>
+        </form>
+        <div class="mt-3">
+            <form
+                action="/landmarks/<%= landmark._id %>?_method=DELETE"
+                method="POST"
+            >
+                <button class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+        <br />
+        <br />
 
+        
+        </div>
+    </div>
+</div>
 
 <script src="/form-validator.js"></script>

@@ -2,88 +2,166 @@
 <div class="row">
     <div class="col-6">
         <div class="card">
-            <img src="<%= landmark.image %>" class="card-img-top" alt="..." />
-            <div class="card-body">
-                <h5 class="card-title"><%= landmark.title %></h5>
-                <p class="card-text"><%= landmark.description %></p>
-                <p class="small">
-                    Created by: <%= landmark.creator.username %>
-                </p>
-                <% if(currentUser && landmark.creator.equals(currentUser._id) )
-                { %>
-                <a
-                    class="card-link btn btn-dark"
-                    href="/landmarks/<%= landmark._id %>/edit"
-                    >Edit</a
-                >
+            <div
+                id="carouselExampleControls"
+                class="carousel slide"
+                data-bs-ride="carousel"
+            >
+                <div class="carousel-inner card-img-top">
+                    <% if(landmark.images && landmark.images.length) { %>
+                    <%landmark.images.forEach((image,index) => { %> <div
+                    class="carousel-item <%= (index==0) ? "active" : ""%>">
+                    <img src="<%= image.url %>" class="d-block w-100" />
+                </div>
+                <% }) %> <% } else { %>
+                <div class="carousel-item active">
+                    <img src="/default.jpg" class="d-block w-100" />
+                </div>
                 <% } %>
             </div>
-            <div class="card-footer">
-                <small class="text-muted"><%= landmark.location %></small>
-            </div>
+            <% if(landmark.images && landmark.images.length > 1){ %>
+            <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#carouselExampleControls"
+                data-bs-slide="prev"
+            >
+                <span
+                    class="carousel-control-prev-icon"
+                    aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#carouselExampleControls"
+                data-bs-slide="next"
+            >
+                <span
+                    class="carousel-control-next-icon"
+                    aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            <% } %>
+        </div>
+
+        <div class="card-body">
+            <h5 class="card-title"><%= landmark.title %></h5>
+            <p class="card-text"><%= landmark.description %></p>
+            <p class="small">Created by: <%= landmark.creator.username %></p>
+            <% if(currentUser && landmark.creator.equals(currentUser._id) ) { %>
+            <a
+                class="card-link btn btn-dark"
+                href="/landmarks/<%= landmark._id %>/edit"
+                >Edit</a
+            >
+            <% } %>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted"><%= landmark.location %></small>
         </div>
     </div>
-    <div class="col-6">
-        <div class="card p-2">
-            <h5 class="card-title mb-5">Reviews</h5>
+</div>
+<div class="col-6">
+    <div class="card p-2">
+        <h5 class="card-title mb-5">Reviews</h5>
 
-            <% for (let review of landmark.reviews ) { %> <% if(review.text) {
-            %>
-            <div class="card mt-3">
-                <div class="card-body">
-                    <p class="card-title">
-                        <b>Rating:</b> <%= review.rating %>
+        <% for (let review of landmark.reviews ) { %> <% if(review.text) { %>
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="card-title">
+                    <p
+                        class="starability-result"
+                        data-rating="<%= review.rating %>"
+                    >
+                        Rated: <%= review.rating %> stars
                     </p>
-                    <p class="card-text"><%= review.text %></p>
                 </div>
-
-                <div class="card-footer d-flex justify-content-between">
-                    <div>By: <%= review.creator.username %></div>
-                    <% if(true || (currentUser &&
-                    review.creator.equals(currentUser._id))){ %>
-                    <div class="d-flex">
-                        <button type="button" class="btn btn-dark mx-1">
-                            Edit
-                        </button>
-                        <form
-                            action="/landmarks/<%= landmark._id %>/reviews/<%= review._id %>?_method=DELETE"
-                            method="post"
-                        >
-                            <button class="btn btn-danger">Delete</button>
-                        </form>
-                    </div>
-                    <% } %>
-                </div>
+                <p class="card-text"><%= review.text %></p>
             </div>
-            <% } %> <% } %> <% if (currentUser){ %>
-            <form
-                action="/landmarks/<%= landmark._id %>/reviews"
-                method="POST"
-                class="needs-validation"
-            >
-                <h5 class="mt-5">Submit a review:</h5>
-                <label for="rating" class="form-label">Rating:</label>
+
+            <div class="card-footer d-flex justify-content-between">
+                <div>By: <%= review.creator.username %></div>
+                <% if((currentUser && review.creator.equals(currentUser._id))){
+                %>
+                <div class="d-flex">
+                    <button type="button" class="btn btn-dark mx-1">
+                        Edit
+                    </button>
+                    <form
+                        action="/landmarks/<%= landmark._id %>/reviews/<%= review._id %>?_method=DELETE"
+                        method="post"
+                    >
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <% } %> <% } %> <% if (currentUser){ %>
+        <form
+            action="/landmarks/<%= landmark._id %>/reviews"
+            method="POST"
+            class="needs-validation"
+        >
+            <h5 class="mt-5">Submit a review:</h5>
+            <fieldset class="starability-basic">
                 <input
-                    type="range"
-                    class="form-range"
-                    min="1"
-                    max="5"
-                    id="rating"
+                    type="radio"
+                    id="no-rate"
+                    class="input-no-rate"
+                    name="review[rating]"
+                    value="0"
+                    checked
+                    aria-label="No rating."
+                />
+                <input
+                    type="radio"
+                    id="first-rate1"
+                    name="review[rating]"
+                    value="1"
+                />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input
+                    type="radio"
+                    id="first-rate2"
+                    name="review[rating]"
+                    value="2"
+                />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input
+                    type="radio"
+                    id="first-rate3"
                     name="review[rating]"
                     value="3"
                 />
-                <br />
-                <label for="review" class="form-label">Review:</label>
-                <textarea
-                    type="text"
-                    class="form-control"
-                    id="review"
-                    name="review[text]"
-                ></textarea>
-                <br />
-                <button class="btn btn-dark">Save</button>
-            </form>
-            <% } %>
-        </div>
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input
+                    type="radio"
+                    id="first-rate4"
+                    name="review[rating]"
+                    value="4"
+                />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input
+                    type="radio"
+                    id="first-rate5"
+                    name="review[rating]"
+                    value="5"
+                />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+            </fieldset>
+            <textarea
+                type="text"
+                class="form-control"
+                id="review"
+                name="review[text]"
+            ></textarea>
+            <br />
+            <button class="btn btn-dark">Submit Review</button>
+        </form>
+        <% } %>
     </div>
 </div>

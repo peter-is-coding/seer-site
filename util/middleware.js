@@ -32,8 +32,7 @@ module.exports.checkLandmarkPermissions = async (req, res, next) => {
     const landmark = await Landmark.findById(req.params.lmid).populate(
         "creator"
     );
-    // console.log(landmark.creator);
-    // console.log(req.user);
+
     if (!landmark) {
         req.flash("error", "Landmark ID not found.");
         return res.render("landmarks", { landmark });

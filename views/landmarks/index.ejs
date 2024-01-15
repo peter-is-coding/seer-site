@@ -1,25 +1,33 @@
-<% layout('layouts/boilerplate') %> 
+<% layout('layouts/boilerplate') %>
 <h1>All Landmarks</h1>
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
     <% for (let landmark of landmarks) {%>
 
-          <div class="col">
-            <div class="card">
-              <a href="/landmarks/<%= landmark._id %>"><img src="<%= landmark.image %>" class="card-img-top" alt="..."></a>
-              <div class="card-body">
+    <div class="col">
+        <div class="card">
+            <a href="/landmarks/<%= landmark._id %>"
+                ><% if(landmark.images && landmark.images.length ){ %>
+                <img
+                    src="<%= landmark.images[0].url %>"
+                    class="card-img-top"
+                    alt="..."
+                />
+                <% } else { %>
+                <img src="/default.jpg" class="card-img-top" alt="..." />
+                <% } %>
+            </a>
+            <div class="card-body">
                 <h5 class="card-title"><%= landmark.title %></h5>
                 <p class="card-text"><%= landmark.description %></p>
-                
-              </div>
-              <div class="card-footer">
+            </div>
+            <div class="card-footer">
                 <small class="text-muted"><%= landmark.location %></small>
             </div>
-            </div>
-          </div>
+        </div>
+    </div>
 
-    <% } %> 
+    <% } %>
 </div>
-<br>
-<br>
-<a href="/landmarks/new">Add a new landmark</a>
+<br />
+<br />
