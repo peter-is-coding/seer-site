@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/seersite-test", {});
+// mongoose.connect(process.env.MONGODB_URL, {});
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const Landmark = require("../models/landmark");

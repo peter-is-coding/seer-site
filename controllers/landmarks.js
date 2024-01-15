@@ -21,8 +21,7 @@ module.exports.create = catchAsync(async (req, res) => {
             limit: 1,
         })
         .send();
-    // console.log(location.body.features[0].geometry);
-    req.body.landmark.location = location.body.features[0].geometry;
+    req.body.landmark.geometry = location.body.features[0].geometry;
 
     const landmark = new Landmark(req.body.landmark);
 
@@ -79,15 +78,13 @@ module.exports.getEditForm = catchAsync(async (req, res) => {
 });
 
 module.exports.update = catchAsync(async (req, res) => {
-    // console.log(req.body);
     const location = await geocoder
         .forwardGeocode({
             query: req.body.landmark.location,
             limit: 1,
         })
         .send();
-    // console.log(location.body.features[0].geometry);
-    req.body.landmark.location = location.body.features[0].geometry;
+    req.body.landmark.geometry = location.body.features[0].geometry;
 
     const landmark = await Landmark.findByIdAndUpdate(
         req.params.lmid,
