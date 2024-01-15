@@ -1,6 +1,9 @@
 const Landmark = require("../models/landmark");
 const catchAsync = require("../util/catchAsync");
 const { cloudinary } = require("../cloudinary");
+const mbxToken = process.env.MAPBOX_TOKEN;
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const geocoder = mbxGeocoding({ accessToken: mbxToken });
 
 module.exports.index = catchAsync(async (req, res) => {
     const landmarks = await Landmark.find({});
@@ -12,7 +15,17 @@ module.exports.new = (req, res) => {
 };
 
 module.exports.create = catchAsync(async (req, res) => {
+    const location = await geocoder
+        .forwardGeocode({
+            query: req.body.landmark.location,
+            limit: 1,
+        })
+        .send();
+    // console.log(location.body.features[0].geometry);
+    req.body.landmark.location = location.body.features[0].geometry;
+
     const landmark = new Landmark(req.body.landmark);
+
     landmark.creator = req.user._id;
     if (req.files && req.files.length) {
         landmark.images = req.files.map((f) => ({
@@ -66,7 +79,15 @@ module.exports.getEditForm = catchAsync(async (req, res) => {
 });
 
 module.exports.update = catchAsync(async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
+    const location = await geocoder
+        .forwardGeocode({
+            query: req.body.landmark.location,
+            limit: 1,
+        })
+        .send();
+    // console.log(location.body.features[0].geometry);
+    req.body.landmark.location = location.body.features[0].geometry;
 
     const landmark = await Landmark.findByIdAndUpdate(
         req.params.lmid,

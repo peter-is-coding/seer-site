@@ -15,6 +15,17 @@ const LandmarkSchema = new Schema({
     title: String,
     description: String,
     location: String,
+    geometry: {
+        type: {
+            type: String,
+            enum: ["Point"],
+            required: true,
+        },
+        coordinates: {
+            type: [Number],
+            required: true,
+        },
+    },
     images: [ImageSchema],
     creator: {
         type: Schema.Types.ObjectId,
