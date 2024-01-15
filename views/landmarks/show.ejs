@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-6">
-        <div class="card">
+        <div class="card bg-secondary border-dark">
             <div
                 id="carouselExampleControls"
                 class="carousel slide"
@@ -61,17 +61,17 @@
             <% } %>
         </div>
         <div class="card-footer">
-            <small class="text-muted"><%= landmark.location %></small>
+            <small class=""><%= landmark.location %></small>
         </div>
     </div>
 </div>
 <div class="col-6">
     <div id="map" style="width: auto; height: 300px"></div>
-    <div class="card p-2">
+    <div class="card p-2 bg-secondary border-dark">
         <h5 class="card-title mb-5">Reviews</h5>
 
         <% for (let review of landmark.reviews ) { %> <% if(review.text) { %>
-        <div class="card mt-3">
+        <div class="card mt-3 bg-secondary border-dark">
             <div class="card-body">
                 <div class="card-title">
                     <p
@@ -173,4 +173,4 @@
     const coords = "<%= landmark.geometry.coordinates %>";
     const landmarkname = "<%= landmark.location %>";
 </script>
-<script src="/showPageMap.js"></script>
+<script src="/scripts/showPageMap.js"></script>

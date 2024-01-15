@@ -1,11 +1,13 @@
 <% layout('layouts/boilerplate') %>
 <h1>All Landmarks</h1>
 
+<div id="map" class="mb-5" style="width: auto; height: 300px"></div>
+
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
     <% for (let landmark of landmarks) {%>
 
     <div class="col">
-        <div class="card">
+        <div class="card bg-secondary border-dark">
             <a href="/landmarks/<%= landmark._id %>"
                 ><% if(landmark.images && landmark.images.length ){ %>
                 <img
@@ -22,7 +24,7 @@
                 <p class="card-text"><%= landmark.description %></p>
             </div>
             <div class="card-footer">
-                <small class="text-muted"><%= landmark.location %></small>
+                <small class=""><%= landmark.location %></small>
             </div>
         </div>
     </div>
@@ -31,3 +33,8 @@
 </div>
 <br />
 <br />
+<script>
+    const mapToken = "<%- process.env.MAPBOX_TOKEN %>";
+    const allLandmarks = `<%- JSON.stringify(landmarks) %>`;
+</script>
+<script src="/scripts/allLandmarksMap.js"></script>

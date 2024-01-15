@@ -11,32 +11,39 @@ ImageSchema.virtual("thumbnail").get(function () {
     return this.url.replace("/upload", "/upload/w_200");
 });
 
-const LandmarkSchema = new Schema({
-    title: String,
-    description: String,
-    location: String,
-    geometry: {
-        type: {
-            type: String,
-            enum: ["Point"],
-            required: true,
+const LandmarkSchema = new Schema(
+    {
+        title: String,
+        description: String,
+        location: String,
+        geometry: {
+            type: {
+                type: String,
+                enum: ["Point"],
+                required: true,
+            },
+            coordinates: {
+                type: [Number],
+                required: true,
+            },
         },
-        coordinates: {
-            type: [Number],
-            required: true,
-        },
-    },
-    images: [ImageSchema],
-    creator: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-    },
-    reviews: [
-        {
+        images: [ImageSchema],
+        creator: {
             type: Schema.Types.ObjectId,
-            ref: "Review",
+            ref: "User",
         },
-    ],
+        reviews: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Review",
+            },
+        ],
+    },
+    { toJSON: { virtuals: true } }
+);
+
+LandmarkSchema.virtual("properties.popUpHTML").get(function () {
+    return `<a href='/landmarks/${this._id}'>${this.title}</a><br>${this.location}`;
 });
 
 //Mongo middleware to delete
