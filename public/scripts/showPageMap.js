@@ -2,6 +2,7 @@ mapboxgl.accessToken = mapToken;
 const point = coords.split(",");
 const map = new mapboxgl.Map({
     container: "map", // container ID
+    style: "mapbox://styles/mapbox/dark-v11",
     center: point, // starting position [lng, lat] // ,
     zoom: 12, // starting zoom
 });
