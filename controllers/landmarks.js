@@ -1,5 +1,6 @@
 const Landmark = require("../models/landmark");
 const catchAsync = require("../util/catchAsync");
+const { cloudinary } = require("../cloudinary");
 
 module.exports.index = catchAsync(async (req, res) => {
     const landmarks = await Landmark.find({});
@@ -13,6 +14,20 @@ module.exports.new = (req, res) => {
 module.exports.create = catchAsync(async (req, res) => {
     const landmark = new Landmark(req.body.landmark);
     landmark.creator = req.user._id;
+    if (req.files && req.files.length) {
+        landmark.images = req.files.map((f) => ({
+            url: f.path,
+            filename: f.filename,
+        }));
+    } else {
+        //Set default image
+        // landmark.images = [
+        //     {
+        //         url: "/default.jpeg",
+        //         filename: null,
+        //     },
+        // ];
+    }
     await landmark.save();
     if (!landmark) {
         req.flash("error", "Landmark ID not found.");
@@ -51,9 +66,25 @@ module.exports.getEditForm = catchAsync(async (req, res) => {
 });
 
 module.exports.update = catchAsync(async (req, res) => {
-    await Landmark.findByIdAndUpdate(req.params.lmid, req.body.landmark);
+    console.log(req.body);
+
+    const landmark = await Landmark.findByIdAndUpdate(
+        req.params.lmid,
+        req.body.landmark
+    );
+
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
+            cloudinary.uploader.destroy(filename);
+        }
+        await landmark.updateOne({
+            $pull: { images: { filename: { $in: req.body.deleteImages } } },
+        });
+        landmark.save();
+    }
+
     req.flash("success", "Landmark updated.");
-    res.redirect(`/landmarks/${landmark._id}`);
+    res.redirect(`/landmarks/${req.params.lmid}`);
 });
 
 module.exports.delete = catchAsync(async (req, res) => {

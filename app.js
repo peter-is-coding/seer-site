@@ -1,8 +1,13 @@
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
 const express = require("express");
 const app = express();
 const path = require("path");
 const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
+
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
@@ -19,6 +24,8 @@ app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(methodOverride("_method"));
 
 //Base session config
@@ -53,8 +60,6 @@ db.once("open", () => {
     console.log("Connect to DB.");
 });
 
-app.use(express.static(path.join(__dirname, "public")));
-
 app.use((req, res, next) => {
     req.requestTime = Date.now();
     next();
@@ -75,7 +80,6 @@ app.all("*", (req, res, next) => {
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
     if (!err.message) err.message = "Server encountered an error.";
-    //console.log(err);
     res.status(statusCode).render("error", { err, statusCode });
 });
 

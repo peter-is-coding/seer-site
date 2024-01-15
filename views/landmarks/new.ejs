@@ -29,8 +29,20 @@
                 required
             />
             <br />
-            <label for="image" class="form-label">Image</label>
-            <input type="file" name="landmark[image]" id="image" />
+
+            <div class="mb-3">
+                <label for="images" class="form-label"
+                    >Upload images of this landmark:</label
+                >
+                <input
+                    class="form-control"
+                    type="file"
+                    id="images"
+                    name="landmark[image]"
+                    multiple
+                />
+            </div>
+
             <br />
             <label for="description" class="form-label">Description:</label>
             <textarea

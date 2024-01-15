@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const landmarks = require("../controllers/landmarks");
 
+const multer = require("multer");
+const { storage } = require("../cloudinary");
+const upload = multer({ storage });
+
 const {
     forceLogin,
     checkLandmarkPermissions,
@@ -11,7 +15,12 @@ const {
 router
     .route("/")
     .get(landmarks.index)
-    .post(forceLogin, validateLandmark, landmarks.create);
+    .post(
+        forceLogin,
+        upload.array("landmark[image]"),
+        validateLandmark,
+        landmarks.create
+    );
 
 router.get("/new", forceLogin, landmarks.new);
 
