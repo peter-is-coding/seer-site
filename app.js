@@ -2,9 +2,6 @@ if (process.env.NODE_ENV !== "production") {
     require("dotenv").config();
 }
 
-const dbURL = "mongodb://localhost:27017/seersite-test";
-// const dbURL = `${process.env.MONGODB_URL}`
-
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -92,7 +89,7 @@ app.use(
 );
 
 const store = MongoStore.create({
-    mongoUrl: dbURL,
+    mongoUrl: process.env.MONGODB_URL,
     toughAfter: 24 * 60 * 60,
     crypto: {
         secret: `${process.env.SESSION_SECRET}`,
@@ -130,7 +127,7 @@ app.use(flash());
 app.use(setFlashes);
 app.use(setUserDetails);
 
-mongoose.connect(dbURL, {});
+mongoose.connect(process.env.MONGODB_URL, {});
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Error connecting to DB:"));
 db.once("open", () => {
