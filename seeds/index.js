@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URL, {});
 const passport = require("passport");
@@ -36,7 +40,7 @@ const seedDB = async () => {
     const newUser = await new User({ username: process.env.ADMINUSER_NAME });
     const adminUser = await User.register(newUser, process.env.ADMINUSER_PW);
 
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 28; i++) {
         const f = sample(seedHelpers.first);
         const m = sample(seedHelpers.middle);
         const l = sample(seedHelpers.last);
