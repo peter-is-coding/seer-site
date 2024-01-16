@@ -15,6 +15,12 @@ db.once("open", () => {
 
 const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
+const randomFloatInRange = function (x, y) {
+    const size = Math.abs(x - y);
+    const base = x < y ? x : y;
+    return base + Math.random() * size;
+};
+
 const seedDB = async () => {
     await Landmark.deleteMany({});
     await User.deleteMany({});
@@ -37,10 +43,13 @@ const seedDB = async () => {
         const title = `${f} ${m} ${l}`;
         const landmark = new Landmark({
             title,
-            location: "Sydney Australia",
+            location: "Somewhere...",
             geometry: {
                 type: "Point",
-                coordinates: [151.2106825, -33.8522605],
+                coordinates: [
+                    randomFloatInRange(-123, -80),
+                    randomFloatInRange(50, 32),
+                ],
             },
             creator: adminUser,
             description:
