@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URL, {});
 const passport = require("passport");
@@ -15,6 +19,12 @@ db.once("open", () => {
 
 const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
+const randomFloatInRange = function (x, y) {
+    const size = Math.abs(x - y);
+    const base = x < y ? x : y;
+    return base + Math.random() * size;
+};
+
 const seedDB = async () => {
     await Landmark.deleteMany({});
     await User.deleteMany({});
@@ -30,17 +40,20 @@ const seedDB = async () => {
     const newUser = await new User({ username: process.env.ADMINUSER_NAME });
     const adminUser = await User.register(newUser, process.env.ADMINUSER_PW);
 
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 28; i++) {
         const f = sample(seedHelpers.first);
         const m = sample(seedHelpers.middle);
         const l = sample(seedHelpers.last);
         const title = `${f} ${m} ${l}`;
         const landmark = new Landmark({
             title,
-            location: "Sydney Australia",
+            location: "Somewhere...",
             geometry: {
                 type: "Point",
-                coordinates: [151.2106825, -33.8522605],
+                coordinates: [
+                    randomFloatInRange(-123, -80),
+                    randomFloatInRange(50, 32),
+                ],
             },
             creator: adminUser,
             description:
